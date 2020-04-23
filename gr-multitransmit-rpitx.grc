@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.11'?>
+<?grc format='1' created='3.7.10'?>
 <flow_graph>
   <timestamp>Mon Apr  8 10:45:16 2019</timestamp>
   <block>
@@ -1826,7 +1826,7 @@
     <key>blks2_tcp_sink</key>
     <param>
       <key>addr</key>
-      <value>192.168.0.x</value>
+      <value>localhost</value>
     </param>
     <param>
       <key>alias</key>

@@ -3,10 +3,8 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Multitransmit for RpiTX
-# Generated: Thu Apr 23 09:46:31 2020
+# Generated: Thu Apr 23 10:04:50 2020
 ##################################################
-
-from distutils.version import StrictVersion
 
 if __name__ == '__main__':
     import ctypes
@@ -18,8 +16,7 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
-from PyQt5 import Qt
-from PyQt5 import Qt, QtCore
+from PyQt4 import Qt
 from gnuradio import analog
 from gnuradio import audio
 from gnuradio import blocks
@@ -34,7 +31,6 @@ from grc_gnuradio import blks2 as grc_blks2
 from optparse import OptionParser
 import sip
 import sys
-from gnuradio import qtgui
 
 
 class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
@@ -43,7 +39,6 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         gr.top_block.__init__(self, "Multitransmit for RpiTX")
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Multitransmit for RpiTX")
-        qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
         except:
@@ -61,8 +56,7 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         self.top_layout.addLayout(self.top_grid_layout)
 
         self.settings = Qt.QSettings("GNU Radio", "gr_multitransmit_rpitx")
-        self.restoreGeometry(self.settings.value("geometry", type=QtCore.QByteArray))
-
+        self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
         ##################################################
         # Variables
@@ -92,132 +86,76 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         self._wfm_on_callback = lambda i: Qt.QMetaObject.invokeMethod(_wfm_on_check_box, "setChecked", Qt.Q_ARG("bool", self._wfm_on_choices_inv[i]))
         self._wfm_on_callback(self.wfm_on)
         _wfm_on_check_box.stateChanged.connect(lambda i: self.set_wfm_on(self._wfm_on_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_wfm_on_check_box, 4, 0, 1, 1)
-        for r in range(4, 5):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_wfm_on_check_box, 4,0)
         _usb_on_check_box = Qt.QCheckBox('USB')
         self._usb_on_choices = {True: True, False: False}
         self._usb_on_choices_inv = dict((v,k) for k,v in self._usb_on_choices.iteritems())
         self._usb_on_callback = lambda i: Qt.QMetaObject.invokeMethod(_usb_on_check_box, "setChecked", Qt.Q_ARG("bool", self._usb_on_choices_inv[i]))
         self._usb_on_callback(self.usb_on)
         _usb_on_check_box.stateChanged.connect(lambda i: self.set_usb_on(self._usb_on_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_usb_on_check_box, 5, 0, 1, 1)
-        for r in range(5, 6):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_usb_on_check_box, 5,0)
         self._test_tone_frequency_range = Range(0, audio_rate, 1, 1000, 200)
         self._test_tone_frequency_win = RangeWidget(self._test_tone_frequency_range, self.set_test_tone_frequency, 'Tone Frequency', "counter", float)
-        self.top_grid_layout.addWidget(self._test_tone_frequency_win, 11, 1, 1, 1)
-        for r in range(11, 12):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._test_tone_frequency_win, 11,1)
         self._rpitx_frequency_correction_range = Range(-24, 24, .1, 0, 200)
         self._rpitx_frequency_correction_win = RangeWidget(self._rpitx_frequency_correction_range, self.set_rpitx_frequency_correction, 'RpiTX Frequency Correction', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._rpitx_frequency_correction_win, 13, 0, 1, 1)
-        for r in range(13, 14):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._rpitx_frequency_correction_win, 13,0)
         _ptt_lock_check_box = Qt.QCheckBox('PTT Lock')
         self._ptt_lock_choices = {True: True, False: False}
         self._ptt_lock_choices_inv = dict((v,k) for k,v in self._ptt_lock_choices.iteritems())
         self._ptt_lock_callback = lambda i: Qt.QMetaObject.invokeMethod(_ptt_lock_check_box, "setChecked", Qt.Q_ARG("bool", self._ptt_lock_choices_inv[i]))
         self._ptt_lock_callback(self.ptt_lock)
         _ptt_lock_check_box.stateChanged.connect(lambda i: self.set_ptt_lock(self._ptt_lock_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_ptt_lock_check_box, 0, 1, 1, 1)
-        for r in range(0, 1):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_ptt_lock_check_box, 0,1)
         _ptt_push_button = Qt.QPushButton('Push To Talk')
         self._ptt_choices = {'Pressed': True, 'Released': False}
         _ptt_push_button.pressed.connect(lambda: self.set_ptt(self._ptt_choices['Pressed']))
         _ptt_push_button.released.connect(lambda: self.set_ptt(self._ptt_choices['Released']))
-        self.top_grid_layout.addWidget(_ptt_push_button, 0, 0, 1, 1)
-        for r in range(0, 1):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_ptt_push_button, 0,0)
         _nfm_on_check_box = Qt.QCheckBox('NFM')
         self._nfm_on_choices = {True: True, False: False}
         self._nfm_on_choices_inv = dict((v,k) for k,v in self._nfm_on_choices.iteritems())
         self._nfm_on_callback = lambda i: Qt.QMetaObject.invokeMethod(_nfm_on_check_box, "setChecked", Qt.Q_ARG("bool", self._nfm_on_choices_inv[i]))
         self._nfm_on_callback(self.nfm_on)
         _nfm_on_check_box.stateChanged.connect(lambda i: self.set_nfm_on(self._nfm_on_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_nfm_on_check_box, 3, 0, 1, 1)
-        for r in range(3, 4):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_nfm_on_check_box, 3,0)
         _lsb_on_check_box = Qt.QCheckBox('LSB')
         self._lsb_on_choices = {True: True, False: False}
         self._lsb_on_choices_inv = dict((v,k) for k,v in self._lsb_on_choices.iteritems())
         self._lsb_on_callback = lambda i: Qt.QMetaObject.invokeMethod(_lsb_on_check_box, "setChecked", Qt.Q_ARG("bool", self._lsb_on_choices_inv[i]))
         self._lsb_on_callback(self.lsb_on)
         _lsb_on_check_box.stateChanged.connect(lambda i: self.set_lsb_on(self._lsb_on_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_lsb_on_check_box, 6, 0, 1, 1)
-        for r in range(6, 7):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_lsb_on_check_box, 6,0)
         self._low_frequency_cutoff_range = Range(1, audio_rate/2, 1, 200, 100)
         self._low_frequency_cutoff_win = RangeWidget(self._low_frequency_cutoff_range, self.set_low_frequency_cutoff, 'Low Frequency Cutoff', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._low_frequency_cutoff_win, 7, 0, 1, 1)
-        for r in range(7, 8):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._low_frequency_cutoff_win, 7,0)
         self._high_frequency_cutoff_range = Range(1, audio_rate/2, 1, 2500, 100)
         self._high_frequency_cutoff_win = RangeWidget(self._high_frequency_cutoff_range, self.set_high_frequency_cutoff, 'High Frequency Cutoff', "counter_slider", float)
-        self.top_grid_layout.addWidget(self._high_frequency_cutoff_win, 7, 1, 1, 1)
-        for r in range(7, 8):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._high_frequency_cutoff_win, 7,1)
         _enable_tone_check_box = Qt.QCheckBox('CTCSS Tone Enable')
         self._enable_tone_choices = {True: True, False: False}
         self._enable_tone_choices_inv = dict((v,k) for k,v in self._enable_tone_choices.iteritems())
         self._enable_tone_callback = lambda i: Qt.QMetaObject.invokeMethod(_enable_tone_check_box, "setChecked", Qt.Q_ARG("bool", self._enable_tone_choices_inv[i]))
         self._enable_tone_callback(self.enable_tone)
         _enable_tone_check_box.stateChanged.connect(lambda i: self.set_enable_tone(self._enable_tone_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_enable_tone_check_box, 10, 0, 1, 1)
-        for r in range(10, 11):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_enable_tone_check_box, 10,0)
         _enable_test_tone_check_box = Qt.QCheckBox('Test Tone')
         self._enable_test_tone_choices = {True: True, False: False}
         self._enable_test_tone_choices_inv = dict((v,k) for k,v in self._enable_test_tone_choices.iteritems())
         self._enable_test_tone_callback = lambda i: Qt.QMetaObject.invokeMethod(_enable_test_tone_check_box, "setChecked", Qt.Q_ARG("bool", self._enable_test_tone_choices_inv[i]))
         self._enable_test_tone_callback(self.enable_test_tone)
         _enable_test_tone_check_box.stateChanged.connect(lambda i: self.set_enable_test_tone(self._enable_test_tone_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_enable_test_tone_check_box, 11, 0, 1, 1)
-        for r in range(11, 12):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_enable_test_tone_check_box, 11,0)
         self._ctcss_tone_range = Range(67, 254.1, .1, 100, 200)
         self._ctcss_tone_win = RangeWidget(self._ctcss_tone_range, self.set_ctcss_tone, 'CTCSS Tone', "counter", float)
-        self.top_grid_layout.addWidget(self._ctcss_tone_win, 10, 1, 1, 1)
-        for r in range(10, 11):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._ctcss_tone_win, 10,1)
         _am_on_check_box = Qt.QCheckBox('AM')
         self._am_on_choices = {True: True, False: False}
         self._am_on_choices_inv = dict((v,k) for k,v in self._am_on_choices.iteritems())
         self._am_on_callback = lambda i: Qt.QMetaObject.invokeMethod(_am_on_check_box, "setChecked", Qt.Q_ARG("bool", self._am_on_choices_inv[i]))
         self._am_on_callback(self.am_on)
         _am_on_check_box.stateChanged.connect(lambda i: self.set_am_on(self._am_on_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_am_on_check_box, 2, 0, 1, 1)
-        for r in range(2, 3):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(_am_on_check_box, 2,0)
         self.rational_resampler_wfm = filter.rational_resampler_ccc(
                 interpolation=audio_rate,
                 decimation=audio_rate*4,
@@ -241,13 +179,13 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         self.qtgui_waterfall_sink_rpitx.set_update_time(0.01)
         self.qtgui_waterfall_sink_rpitx.enable_grid(False)
         self.qtgui_waterfall_sink_rpitx.enable_axis_labels(True)
-
+        
         if not True:
           self.qtgui_waterfall_sink_rpitx.disable_legend()
-
+        
         if "complex" == "float" or "complex" == "msg_float":
           self.qtgui_waterfall_sink_rpitx.set_plot_pos_half(not True)
-
+        
         labels = ['', '', '', '', '',
                   '', '', '', '', '']
         colors = [0, 0, 0, 0, 0,
@@ -261,15 +199,11 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
                 self.qtgui_waterfall_sink_rpitx.set_line_label(i, labels[i])
             self.qtgui_waterfall_sink_rpitx.set_color_map(i, colors[i])
             self.qtgui_waterfall_sink_rpitx.set_line_alpha(i, alphas[i])
-
+        
         self.qtgui_waterfall_sink_rpitx.set_intensity_range(-140, 10)
-
+        
         self._qtgui_waterfall_sink_rpitx_win = sip.wrapinstance(self.qtgui_waterfall_sink_rpitx.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_waterfall_sink_rpitx_win, 1, 1, 1, 1)
-        for r in range(1, 2):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
+        self.top_grid_layout.addWidget(self._qtgui_waterfall_sink_rpitx_win, 1,1)
         self.qtgui_sink_transmit = qtgui.sink_c(
         	1024, #fftsize
         	firdes.WIN_HAMMING, #wintype
@@ -283,17 +217,12 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         )
         self.qtgui_sink_transmit.set_update_time(1.0/100)
         self._qtgui_sink_transmit_win = sip.wrapinstance(self.qtgui_sink_transmit.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_sink_transmit_win, 1, 0, 1, 1)
-        for r in range(1, 2):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
-
-
+        self.top_grid_layout.addWidget(self._qtgui_sink_transmit_win, 1,0)
+        
         self.qtgui_sink_transmit.enable_rf_freq(False)
-
-
-
+        
+        
+          
         self.low_pass_filter_nbfm = filter.fir_filter_fff(1, firdes.low_pass(
         	1, audio_rate, 4e3, 500, firdes.WIN_HAMMING, 6.76))
         self.freq_xlating_fir_filter_rpitx = filter.freq_xlating_fir_filter_ccc(1, ([1]), -rpitx_frequency_correction*1000, 48000)
@@ -314,7 +243,7 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
         self.blocks_add = blocks.add_vff(1)
         self.blks_tcp_sink_rpitx = grc_blks2.tcp_sink(
         	itemsize=gr.sizeof_gr_complex*1,
-        	addr='192.168.0.x',
+        	addr='localhost',
         	port=8011,
         	server=False,
         )
@@ -346,48 +275,46 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
                 )
         self.analog_const_source = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, 0)
 
-
-
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_const_source, 0), (self.blocks_float_to_complex_am_ssb, 1))
-        self.connect((self.analog_nbfm_tx, 0), (self.blocks_multiply_const_nbfm, 0))
-        self.connect((self.analog_sig_source_am, 0), (self.blocks_multiply_am, 1))
-        self.connect((self.analog_sig_source_ctcss, 0), (self.blocks_multiply_const_ctcss, 0))
-        self.connect((self.analog_sig_source_lsb, 0), (self.blocks_multiply_lsb, 1))
-        self.connect((self.analog_sig_source_test, 0), (self.blocks_multiply_const_test, 0))
-        self.connect((self.analog_sig_source_usb, 0), (self.blocks_multiply_usb, 1))
-        self.connect((self.analog_wfm_tx, 0), (self.blocks_multiply_const_wfm, 0))
-        self.connect((self.audio_source, 0), (self.blocks_add, 0))
-        self.connect((self.band_pass_filter_am, 0), (self.blocks_add_const_am, 0))
-        self.connect((self.band_pass_filter_lsb, 0), (self.blocks_multiply_lsb, 0))
-        self.connect((self.band_pass_filter_usb, 0), (self.blocks_multiply_usb, 0))
-        self.connect((self.blocks_add, 0), (self.analog_wfm_tx, 0))
-        self.connect((self.blocks_add, 0), (self.blocks_add_nbfm, 1))
-        self.connect((self.blocks_add, 0), (self.blocks_float_to_complex_am_ssb, 0))
-        self.connect((self.blocks_add_am_ssb, 0), (self.blocks_add_am_ssb_fm, 1))
-        self.connect((self.blocks_add_am_ssb_fm, 0), (self.blocks_multiply_const_rpitx, 0))
-        self.connect((self.blocks_add_const_am, 0), (self.blocks_multiply_am, 0))
-        self.connect((self.blocks_add_fm, 0), (self.blocks_add_am_ssb_fm, 0))
-        self.connect((self.blocks_add_nbfm, 0), (self.low_pass_filter_nbfm, 0))
-        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_am, 0))
-        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_lsb, 0))
-        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_usb, 0))
-        self.connect((self.blocks_multiply_am, 0), (self.blocks_add_am_ssb, 0))
-        self.connect((self.blocks_multiply_const_ctcss, 0), (self.blocks_add_nbfm, 0))
-        self.connect((self.blocks_multiply_const_nbfm, 0), (self.rational_resampler_nbfm, 0))
-        self.connect((self.blocks_multiply_const_rpitx, 0), (self.freq_xlating_fir_filter_rpitx, 0))
-        self.connect((self.blocks_multiply_const_rpitx, 0), (self.qtgui_sink_transmit, 0))
-        self.connect((self.blocks_multiply_const_test, 0), (self.blocks_add, 1))
-        self.connect((self.blocks_multiply_const_wfm, 0), (self.rational_resampler_wfm, 0))
-        self.connect((self.blocks_multiply_lsb, 0), (self.blocks_add_am_ssb, 1))
-        self.connect((self.blocks_multiply_usb, 0), (self.blocks_add_am_ssb, 2))
-        self.connect((self.freq_xlating_fir_filter_rpitx, 0), (self.blks_tcp_sink_rpitx, 0))
-        self.connect((self.freq_xlating_fir_filter_rpitx, 0), (self.qtgui_waterfall_sink_rpitx, 0))
-        self.connect((self.low_pass_filter_nbfm, 0), (self.analog_nbfm_tx, 0))
-        self.connect((self.rational_resampler_nbfm, 0), (self.blocks_add_fm, 0))
-        self.connect((self.rational_resampler_wfm, 0), (self.blocks_add_fm, 1))
+        self.connect((self.analog_const_source, 0), (self.blocks_float_to_complex_am_ssb, 1))    
+        self.connect((self.analog_nbfm_tx, 0), (self.blocks_multiply_const_nbfm, 0))    
+        self.connect((self.analog_sig_source_am, 0), (self.blocks_multiply_am, 1))    
+        self.connect((self.analog_sig_source_ctcss, 0), (self.blocks_multiply_const_ctcss, 0))    
+        self.connect((self.analog_sig_source_lsb, 0), (self.blocks_multiply_lsb, 1))    
+        self.connect((self.analog_sig_source_test, 0), (self.blocks_multiply_const_test, 0))    
+        self.connect((self.analog_sig_source_usb, 0), (self.blocks_multiply_usb, 1))    
+        self.connect((self.analog_wfm_tx, 0), (self.blocks_multiply_const_wfm, 0))    
+        self.connect((self.audio_source, 0), (self.blocks_add, 0))    
+        self.connect((self.band_pass_filter_am, 0), (self.blocks_add_const_am, 0))    
+        self.connect((self.band_pass_filter_lsb, 0), (self.blocks_multiply_lsb, 0))    
+        self.connect((self.band_pass_filter_usb, 0), (self.blocks_multiply_usb, 0))    
+        self.connect((self.blocks_add, 0), (self.analog_wfm_tx, 0))    
+        self.connect((self.blocks_add, 0), (self.blocks_add_nbfm, 1))    
+        self.connect((self.blocks_add, 0), (self.blocks_float_to_complex_am_ssb, 0))    
+        self.connect((self.blocks_add_am_ssb, 0), (self.blocks_add_am_ssb_fm, 1))    
+        self.connect((self.blocks_add_am_ssb_fm, 0), (self.blocks_multiply_const_rpitx, 0))    
+        self.connect((self.blocks_add_const_am, 0), (self.blocks_multiply_am, 0))    
+        self.connect((self.blocks_add_fm, 0), (self.blocks_add_am_ssb_fm, 0))    
+        self.connect((self.blocks_add_nbfm, 0), (self.low_pass_filter_nbfm, 0))    
+        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_am, 0))    
+        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_lsb, 0))    
+        self.connect((self.blocks_float_to_complex_am_ssb, 0), (self.band_pass_filter_usb, 0))    
+        self.connect((self.blocks_multiply_am, 0), (self.blocks_add_am_ssb, 0))    
+        self.connect((self.blocks_multiply_const_ctcss, 0), (self.blocks_add_nbfm, 0))    
+        self.connect((self.blocks_multiply_const_nbfm, 0), (self.rational_resampler_nbfm, 0))    
+        self.connect((self.blocks_multiply_const_rpitx, 0), (self.freq_xlating_fir_filter_rpitx, 0))    
+        self.connect((self.blocks_multiply_const_rpitx, 0), (self.qtgui_sink_transmit, 0))    
+        self.connect((self.blocks_multiply_const_test, 0), (self.blocks_add, 1))    
+        self.connect((self.blocks_multiply_const_wfm, 0), (self.rational_resampler_wfm, 0))    
+        self.connect((self.blocks_multiply_lsb, 0), (self.blocks_add_am_ssb, 1))    
+        self.connect((self.blocks_multiply_usb, 0), (self.blocks_add_am_ssb, 2))    
+        self.connect((self.freq_xlating_fir_filter_rpitx, 0), (self.blks_tcp_sink_rpitx, 0))    
+        self.connect((self.freq_xlating_fir_filter_rpitx, 0), (self.qtgui_waterfall_sink_rpitx, 0))    
+        self.connect((self.low_pass_filter_nbfm, 0), (self.analog_nbfm_tx, 0))    
+        self.connect((self.rational_resampler_nbfm, 0), (self.blocks_add_fm, 0))    
+        self.connect((self.rational_resampler_wfm, 0), (self.blocks_add_fm, 1))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "gr_multitransmit_rpitx")
@@ -524,6 +451,10 @@ class gr_multitransmit_rpitx(gr.top_block, Qt.QWidget):
 
 def main(top_block_cls=gr_multitransmit_rpitx, options=None):
 
+    from distutils.version import StrictVersion
+    if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
+        style = gr.prefs().get_string('qtgui', 'style', 'raster')
+        Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
 
     tb = top_block_cls()
@@ -533,7 +464,7 @@ def main(top_block_cls=gr_multitransmit_rpitx, options=None):
     def quitting():
         tb.stop()
         tb.wait()
-    qapp.aboutToQuit.connect(quitting)
+    qapp.connect(qapp, Qt.SIGNAL("aboutToQuit()"), quitting)
     qapp.exec_()
 
 
